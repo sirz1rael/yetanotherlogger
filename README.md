@@ -1,4 +1,4 @@
-# Header-Only Logger (Pro)
+# Header-Only Logger
 
 A professional-grade, lightweight, thread-safe, header-only C++17 logging library with Sink architecture, source location tracking, **File Rotation**, and **Sanitizer Support**.
 
@@ -51,13 +51,13 @@ Logger::Logger::instance().add_sink(rotating);
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
-    header_only_logger
-    GIT_REPOSITORY https://github.com/YOUR_USERNAME/header_only_logger.git
+    yetanotherlogger
+    GIT_REPOSITORY https://github.com/sirz1rael/yetanotherlogger.git
     GIT_TAG main
 )
-FetchContent_MakeAvailable(header_only_logger)
+FetchContent_MakeAvailable(yetanotherlogger)
 
-target_link_libraries(your_target PRIVATE header_only_logger::logger)
+target_link_libraries(your_target PRIVATE yetanotherlogger::logger)
 ```
 
 ## Testing
