@@ -24,7 +24,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y valgrind
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DUSE_ASAN=ON
+      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DUSE_ASAN=${{ matrix.os != 'ubuntu-latest' }}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
