@@ -1,6 +1,6 @@
-# Header-Only Logger
+# Yet Another Logger
 
-A professional-grade, lightweight, thread-safe, header-only C++17 logging library with Sink architecture, source location tracking, **File Rotation**, and **Sanitizer Support**.
+A lightweight, thread-safe, header-only C++17 logging library with Sink architecture, source location tracking, **File Rotation**, and **Sanitizer Support**.
 
 ## Key Features
 
