@@ -4,10 +4,17 @@ project(yetanotherlogger VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Check if yetanotherlogger is the top-level project
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(YAL_MASTER_PROJECT ON)
+else()
+    set(YAL_MASTER_PROJECT OFF)
+endif()
+
 # Options
-option(BUILD_EXAMPLES "Build examples" ON)
-option(BUILD_TESTS "Build tests" ON)
-option(USE_ASAN "Enable AddressSanitizer (Debug only)" ON)
+option(YAL_BUILD_EXAMPLES "Build examples" ${YAL_MASTER_PROJECT})
+option(YAL_BUILD_TESTS "Build tests" ${YAL_MASTER_PROJECT})
+option(YAL_USE_ASAN "Enable AddressSanitizer (Debug only)" ${YAL_MASTER_PROJECT})
 
 # Define the interface library
 add_library(yetanotherlogger INTERFACE)
@@ -20,8 +27,8 @@ target_include_directories(yetanotherlogger INTERFACE
 )
 
 # Sanitizers configuration
-if(USE_ASAN AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message(STATUS "Enabling AddressSanitizer")
+if(YAL_USE_ASAN AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Enabling AddressSanitizer for yetanotherlogger")
     if(MSVC)
         target_compile_options(yetanotherlogger INTERFACE /fsanitize=address)
     else()
@@ -31,13 +38,13 @@ if(USE_ASAN AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 # Example usage
-if(BUILD_EXAMPLES)
+if(YAL_BUILD_EXAMPLES)
     add_executable(example_usage examples/basic_usage.cpp)
     target_link_libraries(example_usage PRIVATE yetanotherlogger)
 endif()
 
 # Testing infrastructure
-if(BUILD_TESTS)
+if(YAL_BUILD_TESTS)
     enable_testing()
     include(FetchContent)
     FetchContent_Declare(

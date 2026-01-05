@@ -16,10 +16,10 @@ A lightweight, thread-safe, header-only C++17 logging library with Sink architec
 ## Technical Features & Debugging
 
 ### AddressSanitizer (ASAN)
-The library automatically enables ASAN in `Debug` builds to catch memory errors early.
+The library supports ASAN in `Debug` builds to catch memory errors early.
 To build with ASAN:
 ```bash
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_ASAN=ON
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DYAL_USE_ASAN=ON
 ```
 
 ### Valgrind
@@ -48,6 +48,8 @@ Logger::Logger::instance().add_sink(rotating);
 ## Integration
 
 ### Via CMake FetchContent
+By default, examples and tests are **not** built when included as a subproject.
+
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
@@ -60,10 +62,21 @@ FetchContent_MakeAvailable(yetanotherlogger)
 target_link_libraries(your_target PRIVATE yetanotherlogger::logger)
 ```
 
+**Available Options:**
+- `YAL_BUILD_EXAMPLES`: Build example programs (Default: OFF as subproject)
+- `YAL_BUILD_TESTS`: Build unit tests (Default: OFF as subproject)
+- `YAL_USE_ASAN`: Enable AddressSanitizer (Default: OFF as subproject)
+
+To enable an option from your main project:
+```cmake
+set(YAL_BUILD_EXAMPLES ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(yetanotherlogger)
+```
+
 ## Testing
 ```bash
 mkdir build && cd build
-cmake .. -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
+cmake .. -DYAL_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
 make
 ctest
 # Run memory check
