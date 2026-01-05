@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(header_only_logger VERSION 0.1.0 LANGUAGES CXX)
+project(yetanotherlogger VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,11 +10,11 @@ option(BUILD_TESTS "Build tests" ON)
 option(USE_ASAN "Enable AddressSanitizer (Debug only)" ON)
 
 # Define the interface library
-add_library(header_only_logger INTERFACE)
-add_library(header_only_logger::logger ALIAS header_only_logger)
+add_library(yetanotherlogger INTERFACE)
+add_library(yetanotherlogger::logger ALIAS yetanotherlogger)
 
 # Set the include directories
-target_include_directories(header_only_logger INTERFACE
+target_include_directories(yetanotherlogger INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
@@ -23,17 +23,17 @@ target_include_directories(header_only_logger INTERFACE
 if(USE_ASAN AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enabling AddressSanitizer")
     if(MSVC)
-        target_compile_options(header_only_logger INTERFACE /fsanitize=address)
+        target_compile_options(yetanotherlogger INTERFACE /fsanitize=address)
     else()
-        target_compile_options(header_only_logger INTERFACE -fsanitize=address -fno-omit-frame-pointer)
-        target_link_options(header_only_logger INTERFACE -fsanitize=address)
+        target_compile_options(yetanotherlogger INTERFACE -fsanitize=address -fno-omit-frame-pointer)
+        target_link_options(yetanotherlogger INTERFACE -fsanitize=address)
     endif()
 endif()
 
 # Example usage
 if(BUILD_EXAMPLES)
     add_executable(example_usage examples/basic_usage.cpp)
-    target_link_libraries(example_usage PRIVATE header_only_logger)
+    target_link_libraries(example_usage PRIVATE yetanotherlogger)
 endif()
 
 # Testing infrastructure
@@ -48,7 +48,7 @@ if(BUILD_TESTS)
     FetchContent_MakeAvailable(Catch2)
 
     add_executable(unit_tests tests/test_logger.cpp)
-    target_link_libraries(unit_tests PRIVATE header_only_logger Catch2::Catch2WithMain)
+    target_link_libraries(unit_tests PRIVATE yetanotherlogger Catch2::Catch2WithMain)
     
     include(Catch)
     catch_discover_tests(unit_tests)
@@ -67,9 +67,9 @@ endif()
 
 # Installation rules
 include(GNUInstallDirs)
-install(TARGETS header_only_logger EXPORT header_only_logger-targets)
+install(TARGETS yetanotherlogger EXPORT yetanotherlogger-targets)
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(EXPORT header_only_logger-targets
-    NAMESPACE header_only_logger::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/header_only_logger
+install(EXPORT yetanotherlogger-targets
+    NAMESPACE yetanotherlogger::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/yetanotherlogger
 )
