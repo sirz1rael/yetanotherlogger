@@ -40,13 +40,13 @@ namespace Logger {
             case LogLevel::Debug:
                 return "DEBUG";
             case LogLevel::Info:
-                return "INFO ";
+                return "INFO";
             case LogLevel::Warning:
-                return "WARN ";
+                return "WARNING";
             case LogLevel::Error:
                 return "ERROR";
             case LogLevel::Critical:
-                return "CRIT ";
+                return "CRITICAL";
             default:
                 return "UNKNOWN";
         }

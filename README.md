@@ -53,7 +53,7 @@ include(FetchContent)
 FetchContent_Declare(
     yetanotherlogger
     GIT_REPOSITORY https://github.com/sirz1rael/yetanotherlogger.git
-    GIT_TAG main
+    GIT_TAG master
 )
 FetchContent_MakeAvailable(yetanotherlogger)
 
