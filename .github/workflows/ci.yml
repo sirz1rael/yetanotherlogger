@@ -1,0 +1,39 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            valgrind: true
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Valgrind (Ubuntu)
+      if: matrix.valgrind
+      run: sudo apt-get update && sudo apt-get install -y valgrind
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DUSE_ASAN=ON
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C Debug --output-on-failure
+
+    - name: Valgrind Check
+      if: matrix.valgrind
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build . --target valgrind-check
